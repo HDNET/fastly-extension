@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use HDNET\CdnFastly\EventListener\FastlyClearCacheListener;
+use HDNET\CdnFastly\Controller\ClearCacheController;
 
 return [
     'fastly' => [
         'path' => '/backend/fastly',
-        'target' => FastlyClearCacheListener::class . '::clear',
+        'target' => ClearCacheController::class,
     ],
 ];

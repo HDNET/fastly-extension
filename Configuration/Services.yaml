@@ -1,3 +1,6 @@
+parameters:
+  cdn_fastly.cacheGroupIdentifier: fastly
+
 services:
   _defaults:
     autowire: true
@@ -7,6 +10,15 @@ services:
   HDNET\CdnFastly\:
     resource: '../Classes/*'
 
+  HDNET\CdnFastly\Service\ConfigurationServiceInterface:
+    alias: HDNET\CdnFastly\Service\ConfigurationService
+
   HDNET\CdnFastly\EventListener\FastlyClearCacheListener:
     tags:
       - name: event.listener
+
+  HDNET\CdnFastly\Controller\ClearCacheController:
+    tags:
+      - name: backend.controller
+    arguments:
+      $cacheGroupIdentifier: "%cdn_fastly.cacheGroupIdentifier%"

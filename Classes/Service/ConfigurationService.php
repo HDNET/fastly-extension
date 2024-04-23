@@ -29,7 +29,7 @@ class ConfigurationService implements ConfigurationServiceInterface
     public function getSoftpurge(): bool
     {
         $config = $this->findConfiguration();
-        return ((bool)$config['softpurge'])? true : false;
+        return ((bool)$config['softpurge']) ? true : false;
     }
     /**
      * @param array<mixed> $config

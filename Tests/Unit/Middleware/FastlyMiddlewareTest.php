@@ -38,7 +38,7 @@ class FastlyMiddlewareTest extends AbstractTestCase
         $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
         $handler->method('handle')->willReturn(new Response());
 
-        $GLOBALS['TSFE'] = new class() {
+        $GLOBALS['TSFE'] = new class () {
             public $page = [
                 'fastly' => false,
             ];
@@ -68,7 +68,7 @@ class FastlyMiddlewareTest extends AbstractTestCase
         $handler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
         $handler->method('handle')->willReturn(new Response());
 
-        $GLOBALS['TSFE'] = new class() {
+        $GLOBALS['TSFE'] = new class () {
             public $page = [
                 'fastly' => true,
             ];

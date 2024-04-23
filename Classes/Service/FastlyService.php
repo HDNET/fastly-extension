@@ -111,7 +111,7 @@ class FastlyService extends AbstractService
         $httpOptions['timeout'] = 10.0; // 10 seconds
         $httpOptions['base_uri'] = str_replace('{serviceId}', $serviceId, $this->baseUrl);
         $httpOptions['headers']['Fastly-Key'] = $apiToken;
-        if($this->configuration->getSoftpurge()){
+        if ($this->configuration->getSoftpurge()) {
             $httpOptions['headers']['Fastly-Soft-Purge'] = 1;
         }
 

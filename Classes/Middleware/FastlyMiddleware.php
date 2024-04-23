@@ -9,7 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class FastlyMiddleware implements MiddlewareInterface
 {
@@ -79,7 +78,7 @@ class FastlyMiddleware implements MiddlewareInterface
             'stale-if-error' => $staleIfErrorTimeout,
         ];
 
-        $cacheControlHeaderValue = 'max-age='.$GLOBALS['TSFE']->get_cache_timeout().', public';
+        $cacheControlHeaderValue = 'max-age=' . $GLOBALS['TSFE']->get_cache_timeout() . ', public';
         foreach ($additions as $key => $value) {
             $cacheControlHeaderValue .= ',' . $key . '=' . $value;
         }

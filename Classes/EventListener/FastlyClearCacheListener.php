@@ -4,26 +4,27 @@ declare(strict_types=1);
 
 namespace HDNET\CdnFastly\EventListener;
 
-use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 final class FastlyClearCacheListener
 {
+    public function __construct(
+        private readonly UriBuilder $uriBuilder,
+    ) {}
+
     public function __invoke(ModifyClearCacheActionsEvent $event): void
     {
-        $isAdmin = $GLOBALS['BE_USER']->isAdmin();
-        $userTsConfig = $GLOBALS['BE_USER']->getTSConfig();
+        $isAdmin = $this->getBackendUser()->isAdmin();
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
         if (!($isAdmin || (($userTsConfig['options.']['clearCache.'] ?? false) && ($userTsConfig['options.']['clearCache.']['fastly'] ?? false)))) {
             return;
         }
 
-        $route = $this->getAjaxUri();
-        if (!$route) {
+        $route = $this->getAjaxUri('ajax_fastly');
+        if ($route === null) {
             return;
         }
 
@@ -34,27 +35,20 @@ final class FastlyClearCacheListener
             'href' => $route,
             'iconIdentifier' => 'extension-cdn_fastly-clearcache',
         ]);
+        $event->addCacheActionIdentifier('fastly');
     }
 
-    protected function getAjaxUri(): string
+    private function getBackendUser(): BackendUserAuthentication
     {
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        return $GLOBALS['BE_USER'];
+    }
+
+    private function getAjaxUri(string $routeIdentifier): ?string
+    {
         try {
-            $routeIdentifier = 'ajax_fastly';
-            $uri = $uriBuilder->buildUriFromRoute($routeIdentifier);
-        } catch (RouteNotFoundException $e) {
-            return '';
+            return (string)$this->uriBuilder->buildUriFromRoute($routeIdentifier);
+        } catch (RouteNotFoundException) {
+            return null;
         }
-
-        return (string)$uri;
-    }
-
-    public function clear(): ResponseInterface
-    {
-        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        $cacheManager->flushCachesInGroup('fastly');
-
-        return new HtmlResponse('');
     }
 }
