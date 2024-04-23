@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-use HDNET\CdnFastly\Hooks\FastlyClearCache;
+use HDNET\CdnFastly\EventListener\FastlyClearCacheListener;
 
 return [
     'fastly' => [
         'path' => '/backend/fastly',
-        // Use BE route direclty as Request-response call
-        'target' => FastlyClearCache::class . '::clear',
+        'target' => FastlyClearCacheListener::class . '::clear',
     ],
 ];

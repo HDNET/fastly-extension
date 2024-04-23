@@ -1,7 +1,7 @@
 <?php
 
 use HDNET\CdnFastly\Cache\FastlyBackend;
-use HDNET\CdnFastly\Hooks\FastlyClearCache;
+use HDNET\CdnFastly\Events\FastlyClearCache;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
