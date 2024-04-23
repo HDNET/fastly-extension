@@ -15,9 +15,7 @@ class FastlyService extends AbstractService
      */
     protected $baseUrl = 'https://api.fastly.com/service/{serviceId}/';
 
-    public function __construct(private readonly ConfigurationServiceInterface $configuration)
-    {
-    }
+    public function __construct(private readonly ConfigurationServiceInterface $configuration) {}
 
     /**
      * Purge single tag from fastly
